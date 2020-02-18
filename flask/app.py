@@ -10,6 +10,11 @@ PORT = 8000
 
 app = Flask(__name__)
 
+app.secret_key = "Help is quantum"
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 app.register_blueprint(users, url_prefix='/api/v1/users')
 
 @app.before_request
