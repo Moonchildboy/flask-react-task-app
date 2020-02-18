@@ -12,8 +12,19 @@ class User(UserMixin, Model):
 	class Meta:
 		database = DATABASE
 
+class Task(Model):
+	title=CharField()
+	supporting_action=CharField()
+	status=CharField() #should take four values
+	actor=ForeignKeyField(User, backref='task')
+	# date=CharField() #(1).is CharField the correct value? (2).do I want/need to include 
+
+	class Meta:
+		database = DATABASE
+
+
 def initialize():
 	DATABASE.connect()
-	DATABASE.create_tables([User], safe=True)
+	DATABASE.create_tables([User, Task], safe=True)
 	print('connected to DB')
 	DATABASE.close()

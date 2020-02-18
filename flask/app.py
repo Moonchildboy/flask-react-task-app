@@ -24,6 +24,7 @@ def load_user(userid):
 		return None
 
 app.register_blueprint(users, url_prefix='/api/v1/users')
+app.register_blueprint(task, url_prefix='/api/v1/users')
 
 @app.before_request
 def before_request():
