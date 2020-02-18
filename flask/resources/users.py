@@ -36,3 +36,57 @@ def register():
 			message=f"Successfully registered {user_dict['email']}",
 			status=201
 			), 201 
+
+@users.route('/login', methods=['POST'])
+def login(): 
+	payload = request.get_json()
+	payload['email'] = payload['email'].lower()
+	payload['username'] = payload['username'].lower()
+
+	try:
+		user = models.User.get(models.User.email == payload['email'])
+		user_dict = model_to_dict(user)
+		password_is_good = check_password_hash(user_dict['password'], payload['password'])
+
+		if password_is_good:
+			login_user(user)
+			user_dict.pop('password')
+			return jsonify(
+				data=user_dict,
+				message="Successfully logged in!",
+				status=200
+				), 200
+		else:
+			print('try another password, foo')
+			return jsonify(
+				data={},
+				message="email or password is incorrect",
+				status=401
+				), 401
+
+	except models.DoesNotExist:
+		print('username is no good')
+		return jsonify(
+			data={}, 
+			message="email or password is incorrect",
+			status=401
+			), 401
+		#will I need an all route for testing? 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
